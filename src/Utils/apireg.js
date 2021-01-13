@@ -17,9 +17,6 @@ export default class ApiReg {
             }
           return Promise.reject(`Хьюстон, у нас проблемы: ${res.status}`);
         })
-        .then((res) => {
-            return res;
-        })
       }
 
     signup(password, email) {

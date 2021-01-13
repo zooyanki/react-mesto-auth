@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Switch, Route, useHistory} from 'react-router-dom';
+import {Switch, Route, useHistory, useLocation} from 'react-router-dom';
 import {withRouter} from 'react-router';
 
 import {CurrentUserContext, CardContext} from '../contexts/CurrentUserContext';
@@ -17,11 +17,13 @@ import Register from './Register';
 import InfoToolTip from './InfoToolTip';
 import ProtectedRoute from './ProtectedRoute';
 
-import {api} from '../Utils/api';
-import { apireg } from '../Utils/apireg';
+import {api} from '../utils/api';
+import { apireg } from '../utils/apireg';
 
 function App() {
   const history = useHistory();
+  const location = useLocation();
+  
   const [userEmail, setUserEmail] = useState();
   const [currentUser, setCurrentUser] = useState();
   const [cards, setCards] = useState([]);
@@ -41,11 +43,13 @@ function App() {
       
       apireg.usersme(token).then((res) => {
         if (res) {
-          // setUserEmail(res.data.email);
+          setUserEmail(res.data.email);
           setLoggedIn(true);          
           history.push('/main');
         }
       })
+      .catch((err) =>
+          console.log("Упс... что-то пошло не так")); 
     }
 
     api.getUserInfo().then((userInfo)=>{
@@ -95,8 +99,8 @@ function App() {
 
 //Смена аватара на сервере
   const handleUpdateAvatar = (avatar) => {
-    api.setUserAvatar(avatar.avatar).then((a) => {
-      setCurrentUser(a);
+    api.setUserAvatar(avatar.avatar).then((res) => {
+      setCurrentUser(res);
     }).catch((err) =>
     console.log("Упс... что-то пошло не так"));
   }
@@ -116,17 +120,28 @@ const handleLogin = (email) => {
 }
 
   const signOut = () => {
-    localStorage.removeItem('token');
-    history.push('/signin');
+
+      if (location.pathname === "/main") {
+      localStorage.removeItem('token');
+        history.push('/signin');      
+      }
+
+      if (location.pathname === "/signin") {
+        history.push('/signup');      
+      }
+
+      if (location.pathname === "/signup") {
+        history.push('/signin');    
+    }
   }
 
-  const signIn = () => {
-    history.push('/signin');
-  }
+  // const signIn = () => {
+  //   history.push('/signin');
+  // }
 
-  const signUp = () => {
-    history.push('signUp')
-  }
+  // const signUp = () => {
+  //   history.push('/signUp')
+  // }
 
   const handleCardClick = (card) => {
     setSelectedCard(card); 
@@ -167,24 +182,22 @@ const handleLogin = (email) => {
                 
                 <div className="App">                
                   <div className="content">
-
+                        <Header location={location.pathname} email={userEmail} onSign={signOut}/>  
                         <main>
                           <Switch>
 
                             <ProtectedRoute exact path="/" loggedIn={loggedIn} />
 
-                            <Route exact path="/main">
-                              <Header text="Выход" email={userEmail} onSign={signOut}/>  
-                              <Main cards={cards} onConfirmPopup={openPopupConfirm} onEditProfile={openPopupEditor} onAddPlace={openPopupNewForm} onEditAvatar={openPopupAvatar} onCardClick={handleCardClick} onCardLike={handleCardLike}/>
-                            </Route>
+                            <ProtectedRoute exact path="/main" loggedIn={loggedIn} component={Main} cards={cards} onConfirmPopup={openPopupConfirm} onEditProfile={openPopupEditor} onAddPlace={openPopupNewForm} onEditAvatar={openPopupAvatar} onCardClick={handleCardClick} onCardLike={handleCardLike}/>
+                              {/* <Header text="Выход" email={userEmail} onSign={signOut}/>   */}
 
                             <Route exact path="/signin">
-                              <Header text="Регистрация" onSign={signUp}/>
+                              {/* <Header text="Регистрация" onSign={signUp}/> */}
                               <Login handleLogin={handleLogin} onInfoToolTip={openInfoToolTip}/>
                             </Route>
 
                             <Route exact path="/signup" >
-                              <Header text="Войти" onSign={signIn}/>
+                              {/* <Header text="Войти" onSign={signIn}/> */}
                               <Register onInfoToolTip={openInfoToolTip}/>
                             </Route>
 

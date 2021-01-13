@@ -1,6 +1,6 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import {apireg} from '../Utils/apireg';
+import {apireg} from '../utils/apireg';
 
 
 class Register extends React.Component {

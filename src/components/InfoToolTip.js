@@ -3,7 +3,6 @@ import regOk from '../images/reg_ok.svg';
 import regNotOk from '../images/reg_not_ok.svg';
 
 function InfoToolTip(props) {
-    console.log(props.onError);
     return (            
         <div className={`modal modal_${props.name} ${props.isOpen ? 'modal_opened':''}`}>
             <div className="modal__overlay" onClick={props.onClose}></div>          
