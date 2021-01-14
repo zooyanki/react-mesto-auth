@@ -18,7 +18,7 @@ import InfoToolTip from './InfoToolTip';
 import ProtectedRoute from './ProtectedRoute';
 
 import {api} from '../utils/api';
-import { apireg } from '../utils/apireg';
+import { apiReg } from '../utils/apireg';
 
 function App() {
   const history = useHistory();
@@ -41,7 +41,7 @@ function App() {
     if (localStorage.getItem('token')) {
       const token = localStorage.getItem('token');
       
-      apireg.usersme(token).then((res) => {
+      apiReg.usersme(token).then((res) => {
         if (res) {
           setUserEmail(res.data.email);
           setLoggedIn(true);          
@@ -113,6 +113,34 @@ function App() {
     console.log("Упс... что-то пошло не так"));
   }
 
+//Регистрация
+const onRegister = (dataUser) => {
+  apiReg.signup(dataUser.password, dataUser.email)
+    .then((res) => {
+          if (res) {            
+              history.push('/signin');
+              openInfoToolTip();
+            }            
+          } 
+    )
+    .catch(err => console.log(err));
+}
+
+//Авторизация
+const onLogin = (dataUser) => {
+  apiReg.signin(dataUser.password, dataUser.email)
+    .then((data) => {
+        if (data.token) {
+                handleLogin(dataUser.email);
+                openInfoToolTip();
+                history.push('/main');
+            }
+        } )
+    .catch((err) => {            
+      openInfoToolTip(err);
+    });
+}
+
   //Проверка авторизации
 const handleLogin = (email) => {
   setLoggedIn(true);
@@ -134,14 +162,6 @@ const handleLogin = (email) => {
         history.push('/signin');    
     }
   }
-
-  // const signIn = () => {
-  //   history.push('/signin');
-  // }
-
-  // const signUp = () => {
-  //   history.push('/signUp')
-  // }
 
   const handleCardClick = (card) => {
     setSelectedCard(card); 
@@ -189,16 +209,13 @@ const handleLogin = (email) => {
                             <ProtectedRoute exact path="/" loggedIn={loggedIn} />
 
                             <ProtectedRoute exact path="/main" loggedIn={loggedIn} component={Main} cards={cards} onConfirmPopup={openPopupConfirm} onEditProfile={openPopupEditor} onAddPlace={openPopupNewForm} onEditAvatar={openPopupAvatar} onCardClick={handleCardClick} onCardLike={handleCardLike}/>
-                              {/* <Header text="Выход" email={userEmail} onSign={signOut}/>   */}
 
                             <Route exact path="/signin">
-                              {/* <Header text="Регистрация" onSign={signUp}/> */}
-                              <Login handleLogin={handleLogin} onInfoToolTip={openInfoToolTip}/>
+                              <Login onLogin={onLogin}/>
                             </Route>
 
                             <Route exact path="/signup" >
-                              {/* <Header text="Войти" onSign={signIn}/> */}
-                              <Register onInfoToolTip={openInfoToolTip}/>
+                              <Register onRegister={onRegister}/>
                             </Route>
 
                           </Switch>

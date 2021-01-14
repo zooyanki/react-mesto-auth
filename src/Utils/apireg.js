@@ -64,6 +64,6 @@ export default class ApiReg {
 
 }
 
-export const apireg = new ApiReg ({
+export const apiReg = new ApiReg ({
     baseUrl: 'https://auth.nomoreparties.co',
 })
