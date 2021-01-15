@@ -18,7 +18,7 @@ import InfoToolTip from './InfoToolTip';
 import ProtectedRoute from './ProtectedRoute';
 
 import {api} from '../utils/api';
-import { apiReg } from '../utils/apireg';
+import { apiReg } from '../utils/apiReg';
 
 function App() {
   const history = useHistory();
@@ -45,7 +45,7 @@ function App() {
         if (res) {
           setUserEmail(res.data.email);
           setLoggedIn(true);          
-          history.push('/main');
+          history.push('/');
         }
       })
       .catch((err) =>
@@ -133,7 +133,7 @@ const onLogin = (dataUser) => {
         if (data.token) {
                 handleLogin(dataUser.email);
                 openInfoToolTip();
-                history.push('/main');
+                history.push('/');
             }
         } )
     .catch((err) => {            
@@ -149,7 +149,7 @@ const handleLogin = (email) => {
 
   const signOut = () => {
 
-      if (location.pathname === "/main") {
+      if (location.pathname === "/") {
       localStorage.removeItem('token');
         history.push('/signin');      
       }
@@ -206,9 +206,7 @@ const handleLogin = (email) => {
                         <main>
                           <Switch>
 
-                            <ProtectedRoute exact path="/" loggedIn={loggedIn} />
-
-                            <ProtectedRoute exact path="/main" loggedIn={loggedIn} component={Main} cards={cards} onConfirmPopup={openPopupConfirm} onEditProfile={openPopupEditor} onAddPlace={openPopupNewForm} onEditAvatar={openPopupAvatar} onCardClick={handleCardClick} onCardLike={handleCardLike}/>
+                            <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main} cards={cards} onConfirmPopup={openPopupConfirm} onEditProfile={openPopupEditor} onAddPlace={openPopupNewForm} onEditAvatar={openPopupAvatar} onCardClick={handleCardClick} onCardLike={handleCardLike}/>
 
                             <Route exact path="/signin">
                               <Login onLogin={onLogin}/>

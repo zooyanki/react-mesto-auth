@@ -11,7 +11,7 @@ function Header(props) {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname === "/main") {
+        if (location.pathname === "/") {
               setHeaderText('Выйти');
               setEmail(props.email);
             }

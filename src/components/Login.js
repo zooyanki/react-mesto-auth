@@ -1,27 +1,36 @@
-import React, {useRef} from 'react';
+import React, {useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
     function Login (props) {
-        const emailRef = useRef();
-        const passwordRef = useRef();
+        const [email, setEmail] = useState('E-mail');
+        const [password, setPassword] = useState('Пароль');
+
+        const handleChange = (event) => {
+            if (event.target.name === 'email') {
+                setEmail(event.target.value);
+            }
+            if (event.target.name === 'password') {
+                setPassword(event.target.value);
+            }
+        }
 
         const handleSubmit = (event) => {
             event.preventDefault();
-            if (!emailRef.current.value || !passwordRef.current.value) {
+            if (!email || !password) {
                 return;
             }
 
             props.onLogin({
-                email: emailRef.current.value,
-                password: passwordRef.current.value
+                email: email,
+                password: password
             })
         }
    
         return (
             <div className="sign">
                 <h2 className="sign__header">Вход</h2>
-                <input className="sign__input" ref={emailRef} name="email" defaultValue="E-mail" type="email"/>
-                <input className="sign__input" ref={passwordRef} name="password" defaultValue="Пароль" type="password"/>
+                <input className="sign__input" name="email" defaultValue={email} type="email" onChange={handleChange}/>
+                <input className="sign__input" name="password" defaultValue={password} type="password" onChange={handleChange}/>
                 <button className="sign__buttonSubmit" type="submit" onClick={handleSubmit}>Войти</button>
             </div>
         )
