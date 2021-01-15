@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-@media screen and (min-width: 300px) and (max-width: 425px) {
+@media screen and (min-width: 300px) and (max-width: 426px) {
     .header__link-block {
         display: none;
     }

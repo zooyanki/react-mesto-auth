@@ -6,7 +6,7 @@
     border-bottom: 3px solid white;
 }
 
-@media screen and (min-width: 300px) and (max-width: 425px) {
+@media screen and (min-width: 300px) and (max-width: 426px) {
     .header__nav-button {
         display: inline;
     }

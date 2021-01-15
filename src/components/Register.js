@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useRef} from 'react';
 import {withRouter} from 'react-router-dom';
 
 function Register (props) {
@@ -27,10 +27,6 @@ function Register (props) {
                 </h3>
             </div>
         );
-}
-
-
-    
-
+} 
     
 export default withRouter(Register);
