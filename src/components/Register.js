@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
 function Register (props) {
-    const [email, setEmail] = useState('E-mail');
-    const [password, setPassword] = useState('Пароль');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleChange = (event) => {
         if (event.target.name === 'email') {
@@ -26,8 +26,8 @@ function Register (props) {
         return (
             <div className="sign">
                 <h2 className="sign__header">Регистрация</h2>
-                <input className="sign__input" name="email" defaultValue={email} onChange={handleChange} type="email"/>
-                <input className="sign__input" name="password" defaultValue={password} onChange={handleChange} type="password"/>
+                <input className="sign__input" name="email" value={email} onChange={handleChange} placeholder="E-mail" type="email"/>
+                <input className="sign__input" name="password" value={password} onChange={handleChange} placeholder="Пароль" type="password"/>
                 <button className="sign__buttonSubmit" type="submit" onClick={handleSubmit}>Зарегистрировать</button>
                 <h3 className="sign__text">Уже зарегистрированы?
                     <a className="sign__enterlink" href="/signin"> Войти</a>

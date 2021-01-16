@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {withRouter} from 'react-router-dom';
 
     function Login (props) {
-        const [email, setEmail] = useState('E-mail');
-        const [password, setPassword] = useState('Пароль');
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
 
         const handleChange = (event) => {
             if (event.target.name === 'email') {
@@ -29,8 +29,8 @@ import {withRouter} from 'react-router-dom';
         return (
             <div className="sign">
                 <h2 className="sign__header">Вход</h2>
-                <input className="sign__input" name="email" defaultValue={email} type="email" onChange={handleChange}/>
-                <input className="sign__input" name="password" defaultValue={password} type="password" onChange={handleChange}/>
+                <input className="sign__input" name="email" value={email} type="email" placeholder="E-mail" onChange={handleChange}/>
+                <input className="sign__input" name="password" value={password} type="password" placeholder="Пароль" onChange={handleChange}/>
                 <button className="sign__buttonSubmit" type="submit" onClick={handleSubmit}>Войти</button>
             </div>
         )
